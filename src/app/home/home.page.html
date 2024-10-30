@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="container my-4">
+
+    <ion-item class="mb-6">
+      <ion-select id="tipoConsulta" [(ngModel)]="tipoConsulta" interface="popover">
+        <ion-select-option value="">Seleccione el tipo de consulta...</ion-select-option>
+        <ion-select-option value="IDENTIFICACION">Identificación</ion-select-option>
+        <ion-select-option value="CUENTA_CONTRATO">Número de contrato</ion-select-option>
+        <ion-select-option value="CUEN">Código único</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="mb-6">
+      <ion-label position="floating">Ingrese un valor:</ion-label>
+      <ion-input id="inputValue" 
+      [(ngModel)]="inputValue" 
+      placeholder="Ingrese valor"
+    (ionInput)="validateNumber($event)"
+      ></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" color="primary" (click)="consultar()">Consultar</ion-button>
+  
+    <ion-list *ngIf="agrupadas.length">
+      <ion-item-group *ngFor="let fecha of agrupadas">
+        <ion-item-divider color="light">
+          <ion-label>
+            <div>{{ fecha.dia | titlecase }}</div>
+            <small class="text-muted">{{ fecha.fechaCompleta }}</small>
+          </ion-label>
+        </ion-item-divider>
+        <ion-item *ngFor="let horario of fecha.horarios">
+          <ion-label>
+            De {{ horario.horaDesde }} a {{ horario.horaHasta }}
+          </ion-label>
+        </ion-item>
+      </ion-item-group>
+    </ion-list>
+    
+  </ion-card>
+</ion-content>
+

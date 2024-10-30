@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiConsultaCNEL: 'https://api.cnelep.gob.ec/servicios-linea/v1/notificaciones/consultar/'
 };
 
 /*

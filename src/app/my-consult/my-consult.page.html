@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Consultas Guardadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list *ngIf="consultas">
+    <ion-item *ngFor="let consulta of consultas">
+      <ion-avatar slot="start">
+        <img alt="Avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ consulta.tipoConsulta }}</h2>
+        <p>Valor: {{ consulta.inputValue }}</p>
+        <small>{{ consulta.fecha | date: 'short' }}</small>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
