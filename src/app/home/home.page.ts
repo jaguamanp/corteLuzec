@@ -1,35 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiServiceService } from '../service/apiService/api-service.service';
 import { DatabaseService } from "../service/db/database.service";
+import { IonModal } from '@ionic/angular';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit{
   inputValue = '';
   tipoConsulta = '';
   agrupadas: any[] = [];
+  @ViewChild('modal1', { static: true }) modal1!: IonModal;
+
+  presentingElement : Element | null = null;
 
   constructor(
     private notificacionesService: ApiServiceService,
     private databaseService: DatabaseService
   ) {}
 
+
+  ngOnInit(): void {
+    this.presentingElement = document.querySelector('.ion-page');
+  }
+
   async consultar() {
     this.notificacionesService.consultarNotificaciones(this.tipoConsulta, this.inputValue)
-      .subscribe(response => {
+      .subscribe(async (response) => { // Cambiar aquí a `async (response)`
         if (response.resp === 'OK' && response.notificaciones?.length) {
-          //guardar consulta
-          this.databaseService.saveConsulta(this.tipoConsulta, this.inputValue);
-
+          // Usamos await para esperar el resultado de `getSearchConsult`
+          let existeConsulta = await this.databaseService.getSearchConsult(this.inputValue);
+  
+          console.log("existeConsulta: "+existeConsulta);
+          if (existeConsulta === 0) {
+            // Guarda la consulta ya que no existe
+            await this.databaseService.saveConsulta(this.tipoConsulta, this.inputValue);
+          }
+          
           this.agrupadas = this.agruparPorDia(response.notificaciones[0].detallePlanificacion);
+  
+          this.modal1.present();
         } else {
           this.agrupadas = [];
           alert('No se encontraron notificaciones.');
         }
       });
   }
+  
 
   diasSemana = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
 

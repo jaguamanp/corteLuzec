@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="div-header">
     <ion-title>
       Home
     </ion-title>
@@ -27,23 +27,39 @@
       ></ion-input>
     </ion-item>
 
-    <ion-button expand="block" color="primary" (click)="consultar()">Consultar</ion-button>
+    <ion-button expand="block" class="btn-block" (click)="consultar()">Consultar</ion-button>
   
-    <ion-list *ngIf="agrupadas.length">
-      <ion-item-group *ngFor="let fecha of agrupadas">
-        <ion-item-divider color="light">
-          <ion-label>
-            <div>{{ fecha.dia | titlecase }}</div>
-            <small class="text-muted">{{ fecha.fechaCompleta }}</small>
-          </ion-label>
-        </ion-item-divider>
-        <ion-item *ngFor="let horario of fecha.horarios">
-          <ion-label>
-            De {{ horario.horaDesde }} a {{ horario.horaHasta }}
-          </ion-label>
-        </ion-item>
-      </ion-item-group>
-    </ion-list>
+    <ion-modal #modal1 >
+      <ng-template>
+        <ion-header>
+          <ion-toolbar class="div-header">
+            <ion-title>Horarios de corte</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="modal1.dismiss()">Cerrar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        
+        <ion-content>
+          <!-- Lista de horarios agrupados -->
+          <ion-list *ngFor="let fecha of agrupadas">
+            <ion-item-divider color="light">
+              <ion-label>
+                <div>{{ fecha.dia | titlecase }}</div>
+                <small class="text-muted">{{ fecha.fechaCompleta }}</small>
+              </ion-label>
+            </ion-item-divider>
+            
+            <ion-item *ngFor="let horario of fecha.horarios">
+              <ion-label>
+                <h2>De {{ horario.horaDesde }} a {{ horario.horaHasta }}</h2>
+                <p>{{ horario.descripcion }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
     
   </ion-card>
 </ion-content>

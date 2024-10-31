@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.jgcreater.corteluzec;
 
 import com.getcapacitor.BridgeActivity;
 
